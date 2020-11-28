@@ -1,22 +1,10 @@
-import warnings
-import serial
-import serial.tools.list_ports
-import time
+import arduino_connector as arduino
 import tkinter as tk
 from psychopy import visual, core, event, clock
 import random
 
-arduino_ports = [
-    p.device
-    for p in serial.tools.list_ports.comports()
-    if 'Arduino' in p.description  # may need tweaking to match new arduinos
-]
-if not arduino_ports:
-    raise IOError("No Arduino found")
-if len(arduino_ports) > 1:
-    warnings.warn('Multiple Arduinos found - using the first')
 
-ser = serial.Serial(arduino_ports[0], 9600, timeout=0)
+arduino.connect_to_arduino()
 
 def get_config_data():
     conf = open('config.txt', 'rt', encoding='utf-8')
@@ -26,13 +14,6 @@ def get_config_data():
     return configuration
 
 
-def start_vibrate():
-    ser.write(bytes([1]))
-    ser.flush()
-
-def stop_vibrate():
-    ser.write(bytes([0]))
-    ser.flush()
 
 config = get_config_data()
 
@@ -74,6 +55,7 @@ previous_stims = [] #list for controlling situations when we have more than 3 sh
 is_showing_only_one_type = False
 stim1_shows = 0 #number of shows of each stim
 stim2_shows = 0
+
 for a in range (0, total_stims_number, 1):
     stim_type = random.randint(0, 1)
     previous_stims.append(stim_type)
@@ -106,11 +88,7 @@ for a in range (0, total_stims_number, 1):
     mov.draw()
     win.flip()
     if stim_type == 0:
-        timer = core.Clock()
-        timer.add(stim_duration)
-        while timer.getTime() < 0:
-            start_vibrate()
-        stop_vibrate()
+        arduino.vibrate(stim_duration) #this will stop the stim for the configured time and will make arduino vibrate
     else:
         core.wait(stim_duration)
 
