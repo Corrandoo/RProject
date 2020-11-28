@@ -1,0 +1,5 @@
+ISI = 0.5
+stim_duration = 5
+minimum_number_of_each_stim = 5
+maximum_number_of_each_stim = 10
+window_color = #54C7FC'
