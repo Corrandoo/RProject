@@ -1,5 +1,7 @@
-ISI = 8
-stim_duration = 3
+ISI = 1
+stim_duration = 6
 minimum_number_of_each_stim = 15
 maximum_number_of_each_stim = 15
 window_color = #54C7FC'
+first_vibration_time = 0.05
+random_vibration_step = 0.15

@@ -20,6 +20,9 @@ config = get_config_data()
 isi_time = float(config[0])
 stim_duration = float(config[1])
 
+def get_vibration_data_to_arduino():
+    return [float(config[5]), float(config[6])]  # first is first_vibration_time, second is random_vibration_step
+
 
 #### GET SCREEN RESOLUTION
 root = tk.Tk()
@@ -88,7 +91,7 @@ for a in range (0, total_stims_number, 1):
     mov.draw()
     win.flip()
     if stim_type == 0:
-        arduino.vibrate(stim_duration) #this will stop the stim for the configured time and will make arduino vibrate
+        arduino.vibrate(stim_duration, float(config[5]), float(config[6])) #this will stop the stim for the configured time and will make arduino vibrate
     else:
         core.wait(stim_duration)
 

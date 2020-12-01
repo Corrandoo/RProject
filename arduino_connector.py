@@ -6,6 +6,7 @@ import random
 ser=None
 
 
+
 def connect_to_arduino():
     global ser
     arduino_ports = [
@@ -20,14 +21,17 @@ def connect_to_arduino():
 
     ser = serial.Serial(arduino_ports[0], 9600, timeout=0)
 
-def vibrate(duration):
-    milliseconds_duration = duration * 1000
+
+def vibrate(duration, first_vibration_time, random_vibration_step):
     timer = core.Clock()
     timer.add(duration)
+    ser.write(bytes([1]))
+    core.wait(first_vibration_time)
+    ser.flush()
     while timer.getTime() < 0:
-        is_vibrating_now = random.randint(0, 1)
+        is_vibrating_now = random.randint(1, 2)
         ser.write(bytes([is_vibrating_now]))
-        core.wait(0.2)
+        core.wait(random_vibration_step)
         ser.flush()
     ser.write(bytes([0]))
     ser.flush()
