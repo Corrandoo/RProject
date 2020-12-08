@@ -32,6 +32,7 @@ def vibrate(duration, first_vibration_time, random_vibration_step):
         is_vibrating_now = random.randint(1, 2)
         ser.write(bytes([is_vibrating_now]))
         core.wait(random_vibration_step)
+        ser.write(bytes([0]))
         ser.flush()
     ser.write(bytes([0]))
     ser.flush()

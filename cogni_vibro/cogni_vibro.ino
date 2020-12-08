@@ -14,7 +14,7 @@ void vibrate(){
   if(Serial.available()>0){
     inByte = Serial.read();
     if(inByte == 1){
-      randomVal = random(70, 256);
+      randomVal = random(70, 150);
       analogWrite(3, randomVal);
       analogWrite(5, 255);
       
